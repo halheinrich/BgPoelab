@@ -12,8 +12,16 @@ public sealed class BearoffPositionCatalog
     private readonly BgBoEnumeration _enumeration =
         new(BearoffPosition.TotalCheckers, OffPoint, BearoffPosition.HomePointCount);
 
+    /// <summary>
+    /// The highest invariant ID bgBoEnumeration assigns to a bearoff position;
+    /// IDs run from 0 to this value inclusive.
+    /// </summary>
     public long MaxInvariantId => checked((long)_enumeration.MaxId);
 
+    /// <summary>
+    /// Every blot-free bearoff position with its invariant ID, in
+    /// bgBoEnumeration's enumeration order. Positions are produced lazily.
+    /// </summary>
     public IEnumerable<IndexedBearoffPosition> EnumerateBlotFree()
     {
         foreach (nint[] menOnPoint in _enumeration.GetMenOnPointArrayYielder())
@@ -28,6 +36,11 @@ public sealed class BearoffPositionCatalog
         }
     }
 
+    /// <summary>The bearoff position with <paramref name="invariantId"/>, which may hold a blot.</summary>
+    /// <param name="invariantId">An ID from 0 to <see cref="MaxInvariantId"/>.</param>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// <paramref name="invariantId"/> is outside 0 to <see cref="MaxInvariantId"/>.
+    /// </exception>
     public IndexedBearoffPosition GetByInvariantId(long invariantId)
     {
         if (invariantId < 0 || invariantId > MaxInvariantId)
@@ -59,6 +72,9 @@ public sealed class BearoffPositionCatalog
     }
 }
 
+/// <summary>A bearoff position paired with its bgBoEnumeration invariant ID.</summary>
+/// <param name="InvariantId">The ID bgBoEnumeration assigns to <paramref name="Position"/>.</param>
+/// <param name="Position">The bearoff position.</param>
 public readonly record struct IndexedBearoffPosition(
     long InvariantId,
     BearoffPosition Position);

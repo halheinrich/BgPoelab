@@ -11,9 +11,18 @@ public sealed class PoelabCalculator
 
     private readonly Dictionary<BearoffPosition, double> _memo = new();
 
+    /// <summary>The POELAB of the position with these counts on points 1 through 6.</summary>
+    /// <param name="points">Six counts, point 1 first, as <see cref="BearoffPosition(ReadOnlySpan{int})"/> takes them.</param>
+    /// <exception cref="ArgumentException">The counts do not form a bearoff position.</exception>
     public double Calculate(ReadOnlySpan<int> points) =>
         Calculate(new BearoffPosition(points));
 
+    /// <summary>
+    /// The POELAB of <paramref name="position"/>: 1 when it already holds a blot,
+    /// 0 when every checker is borne off. Results are memoized per instance, and
+    /// an instance is not safe for concurrent use.
+    /// </summary>
+    /// <param name="position">The position before the next roll.</param>
     public double Calculate(BearoffPosition position)
     {
         if (!position.IsBlotFree)

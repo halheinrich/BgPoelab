@@ -1,15 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
+  <!-- TargetFramework, Nullable, ImplicitUsings, and TreatWarningsAsErrors
+       come from Directory.Build.props. Doc-file generation is a shipping-
+       surface concern; test members need no XML docs, so the repo-wide
+       GenerateDocumentationFile=true is overridden off here. -->
   <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.8.1" />
-    <PackageReference Include="xunit" Version="2.9.3" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="3.1.5" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio" />
   </ItemGroup>
 
   <ItemGroup>
