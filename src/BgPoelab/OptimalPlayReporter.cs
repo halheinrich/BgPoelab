@@ -32,7 +32,7 @@ public sealed class OptimalPlayReporter
         foreach (CandidatePlay candidate in candidates)
         {
             BearoffPosition resultingPosition =
-                BearoffPosition.FromBoardState(candidate.ResultingState);
+                BearoffPosition.FromBoardPosition(candidate.ResultingPosition);
 
             if (!resultingPosition.IsBlotFree)
                 continue;
@@ -40,8 +40,7 @@ public sealed class OptimalPlayReporter
             foundBlotFreeCandidate = true;
 
             double poelab = _calculator.Calculate(resultingPosition);
-            string notation =
-                MoveNotationFormatter.Format(candidate.Play);
+            string notation = candidate.Play.ToNotation();
 
             if (poelab < bestPoelab ||
                 (poelab == bestPoelab &&

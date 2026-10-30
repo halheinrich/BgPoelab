@@ -11,6 +11,9 @@ public readonly record struct BearoffPosition
     public const int HomePointCount = 6;
     public const int TotalCheckers = 15;
 
+    // BoardPosition's layout: index 0 and 25 are the bars, 1-24 the points.
+    private const int BoardSlotCount = 26;
+
     private readonly ulong _packed;
 
     public BearoffPosition(ReadOnlySpan<int> points)
@@ -80,22 +83,19 @@ public readonly record struct BearoffPosition
 
     public BoardState ToBoardState()
     {
-        var board = new BoardState();
+        Span<int> counts = stackalloc int[BoardSlotCount];
 
         for (int point = 1; point <= HomePointCount; point++)
-            board.Points[point] = this[point];
+            counts[point] = this[point];
 
-        board.RecalcHighPoint();
-        return board;
+        return new BoardState(new BoardPosition(counts));
     }
 
-    public static BearoffPosition FromBoardState(BoardState board)
+    public static BearoffPosition FromBoardPosition(BoardPosition board)
     {
-        ArgumentNullException.ThrowIfNull(board);
-
         Span<int> points = stackalloc int[HomePointCount];
         for (int point = 1; point <= HomePointCount; point++)
-            points[point - 1] = board.Points[point];
+            points[point - 1] = board[point];
 
         return new BearoffPosition(points);
     }

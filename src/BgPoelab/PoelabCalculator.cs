@@ -37,15 +37,15 @@ public sealed class PoelabCalculator
         {
             for (int die2 = 1; die2 <= DieSides; die2++)
             {
-                IReadOnlyList<BoardState> successors =
-                    MoveGenerator.GenerateResultingStates(board, die1, die2);
+                IReadOnlyList<BoardPosition> successors =
+                    MoveGenerator.GenerateResultingPositions(board, die1, die2);
 
                 double best = 1.0;
 
-                foreach (BoardState successor in successors)
+                foreach (BoardPosition successor in successors)
                 {
                     BearoffPosition successorPosition =
-                        BearoffPosition.FromBoardState(successor);
+                        BearoffPosition.FromBoardPosition(successor);
 
                     double value = successorPosition.IsBlotFree
                         ? CalculateBlotFree(successorPosition)
