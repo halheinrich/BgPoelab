@@ -1,5 +1,6 @@
 <Solution>
   <Project Path="../../../../Visual Studio 2022/Projects/bgBoEnumeration/bgBoEnumeration/bgBoEnumeration.csproj" />
+  <Project Path="../BgDataTypes_Lib/BgDataTypes_Lib/BgDataTypes_Lib.csproj" />
   <Project Path="../BgMoveGen/BgMoveGen/BgMoveGen.csproj" />
   <Project Path="src/BgPoelab/BgPoelab.csproj" />
   <Project Path="tests/BgPoelab.Tests/BgPoelab.Tests.csproj" />
