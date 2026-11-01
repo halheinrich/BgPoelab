@@ -3,6 +3,7 @@
 > Collaboration contract: [`../AGENTS.md`](../AGENTS.md)
 > Umbrella status & dependency graph: [`../INSTRUCTIONS.md`](../INSTRUCTIONS.md)
 > Mission & principles: [`../VISION.md`](../VISION.md)
+> Open work: the [tracker](https://github.com/halheinrich/backgammon/issues), label `BgPoelab`.
 
 ## What it is for
 
@@ -10,16 +11,19 @@ BgPoelab is a console program that computes POELAB for every blot-free
 one-sided bearoff position: the probability of ever ending a complete legal
 play with a blot, under the play that minimizes it. For each position it
 writes one CSV row with the POELAB and the optimal play for each of the 21
-rolls. [`README.md`](README.md) defines POELAB, the architecture and the CSV
-columns; this file does not repeat them.
+rolls. [`README.md`](README.md) is the home of POELAB's definition, the
+architecture and the CSV columns.
 
-## Stack, solution, repo
+## Stack and solution
 
 C# / .NET 10 console app / xUnit.
 
-- Solution: `BgPoelab.slnx`, with `src/BgPoelab` (the program) and
-  `tests/BgPoelab.Tests`.
-- Repo: https://github.com/halheinrich/BgPoelab, branch `main`.
+- Solution: `BgPoelab.slnx`, with `src/BgPoelab` (the program),
+  `tests/BgPoelab.Tests` and the three projects they build against.
+- Code: the README's Architecture passage places `BearoffPosition`,
+  `BearoffPositionCatalog` and `PoelabCalculator`. Beyond those,
+  `OptimalPlayReporter` picks the play for each roll column and `Program.cs`
+  writes the CSV.
 - Build policy: the repo-root `Directory.Build.props` (TFM,
   `TreatWarningsAsErrors`, XML docs on the program's public surface; the
   test project opts out of doc generation) and `Directory.Packages.props`
@@ -61,8 +65,9 @@ of bgBoEnumeration elsewhere succeeded.
 
 **Running the program overwrites `output/poelab.csv`.** With no argument it
 writes there, finding the repo root by walking up to `BgPoelab.slnx`. The
-`output/` folder is gitignored, so that file is the only local copy of the
-previous results. Pass a path to write anywhere else.
+`output/` folder is gitignored, so git holds no earlier version to restore,
+and running again yields the current code's results, not the old file's. Pass
+a path to write anywhere else.
 
 ## Running and checking
 
@@ -82,10 +87,11 @@ dotnet run --project src/BgPoelab/BgPoelab.csproj -c Release -- <output.csv>
 
 The test suite includes exhaustive comparisons over all 12,201 blot-free
 positions in three traversal orders; it took 8 to 15 seconds in Release
-(measured 2026-10-29). The program prints the row count and the 222333 POELAB, a quick
-check against the test's reference value.
+(measured 2026-10-29). The program prints the row count and the 222333 POELAB,
+a quick check against the reference value in
+`Position222333_MatchesIndependentReferenceCalculation`.
 
 For a change that must not alter results, write the CSV to another path and
 compare it byte for byte with the existing `output/poelab.csv`. That is how
 the port to the current BgMoveGen and BgDataTypes_Lib APIs was verified
-(`halheinrich/backgammon#453`).
+(805277f, `halheinrich/backgammon#453`).
